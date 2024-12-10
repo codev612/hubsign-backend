@@ -1,13 +1,11 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator'
-export class CreateUserDto {
-    @IsEmail()
-    @IsNotEmpty()
-    email: string;
+export class UpdateUserDto {
     firstname: string;
     lastname: string;
     phonenumber: string;
     password: string;
     role: string;
     status: string;
-    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date;
   }

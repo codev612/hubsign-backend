@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export const UserSchema = new mongoose.Schema({
-  emal: String,
+  email: String,
   firstname: String,
   lastname: String,
   password: String,
@@ -17,6 +17,5 @@ export const UserSchema = new mongoose.Schema({
   },
   deletedAt: {
     type: Date,
-    default: Date.now,
   },
 });
