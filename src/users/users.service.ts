@@ -14,16 +14,16 @@ export class UsersService {
     return createdUser;
   }
 
-  async update(email: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(userToken: string, updateUserDto: UpdateUserDto): Promise<User> {
     // If a new password is provided, hash it
     if (updateUserDto.password) {
-      updateUserDto.password = await this.hashPassword(updateUserDto.password);
+      updateUserDto.password = await this.hashString(updateUserDto.password);
     }
     // Set the updatedAt field to the current date
     updateUserDto.updatedAt = new Date(); //
 
     const updatedUser = await this.userModel.findOneAndUpdate(
-      { email }, // Find user by email
+      { userToken }, // Find user by email
       updateUserDto, // Update data
       { new: true } // Return the updated document
     ).exec();
@@ -44,14 +44,16 @@ export class UsersService {
       // throw new ConflictException('Already existing user');
       return existingUser;
     } else {
+      createUserDto.userToken = await this.hashString(email);
+      console.log(createUserDto);
       // If user does not exist, create a new user
       const createdUser = await this.create(createUserDto);
       return createdUser;
     }
   }
 
-  private async hashPassword(password: string): Promise<string> {
+  private async hashString(sstring: string): Promise<string> {
     const saltRounds = 10; // You can adjust the salt rounds
-    return await bcrypt.hash(password, saltRounds);
+    return await bcrypt.hash(sstring, saltRounds);
   }
 }

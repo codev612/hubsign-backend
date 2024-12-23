@@ -3,6 +3,7 @@ export class CreateUserDto {
     @IsEmail()
     @IsNotEmpty()
     email: string;
+    userToken: String;
     firstname: string;
     lastname: string;
     phonenumber: string;

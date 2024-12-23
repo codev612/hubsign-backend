@@ -11,10 +11,10 @@ export class UsersController {
 
   @Post()
   async create(
-    @Body('email') email: string,
+    @Body('userToken') userToken: string,
     @Body() updateUserDto: UpdateUserDto
   ) {
-    return this.usersService.update(email, updateUserDto);
+    return this.usersService.update(userToken, updateUserDto);
   }
 
   @Get()
@@ -33,6 +33,17 @@ export class UsersController {
     @Body() createUserDto: CreateUserDto // Include the DTO in the body for creating a new user
   ): Promise<User | string> {
     const result = await this.usersService.findOrCreate(email, createUserDto);
+    console.log(result);
+    return result;
+  }
+
+  @Post('/resetpass')
+  async resetPass(
+    @Body('userToken') userToken: string, 
+    @Body() updateUserDto: UpdateUserDto // Include the DTO in the body for creating a new user
+  ): Promise<User | string> {
+    const result = await this.usersService.update(userToken, updateUserDto);
+    console.log(result);
     return result;
   }
 }
