@@ -35,6 +35,10 @@ export class UsersService {
     return this.userModel.find().exec();
   }
 
+  async findOne(email: string): Promise<User | undefined> {
+    return this.userModel.findOne({email}).exec();
+  }
+
   // findOne to search by email
   async findOrCreate(email: string, createUserDto: CreateUserDto): Promise<User | string> {
     const existingUser = await this.userModel.findOne({ email }).exec(); // Check if user already exists

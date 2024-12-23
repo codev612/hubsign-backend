@@ -22,11 +22,6 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  // @Post('/emailcheck')
-  // async findOne(): Promise<User[]> {
-  //   return this.usersService.findAll();
-  // }
-
   @Post('/emailcheck')
   async findOne(
     @Body('email') email: string, 
