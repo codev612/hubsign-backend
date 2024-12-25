@@ -22,7 +22,11 @@ export class AuthService {
         throw new UnauthorizedException("User not found");
     }
 
-    const match = await this.comparePassword(pass, user.password);
+    if(!user.password){
+      throw new UnauthorizedException("Complete your signup");
+    }
+
+    const match = await this.comparePassword(pass, user.password || "");
 
     if (!match) {
       throw new UnauthorizedException("Invalid password");
