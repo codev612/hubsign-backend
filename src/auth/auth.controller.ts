@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { User } from 'src/users/interfaces/user.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -24,8 +25,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
-    console.log(req.user.email);
+  getProfile(@Request() req): Promise<User> {
     return this.authService.getUser(req.user.email);
   }
 }

@@ -9,8 +9,8 @@ import { User } from 'src/users/interfaces/user.interface';
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService
-  ) {}
+    private readonly jwtService: JwtService
+  ) {} 
 
   async signIn(
     email: string,
@@ -48,6 +48,6 @@ export class AuthService {
     email: string,
   ): Promise<User> {
     const user = await this.usersService.findOne(email);
-    return user
+    return user;
   }
 }
