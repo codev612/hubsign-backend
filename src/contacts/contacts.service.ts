@@ -13,8 +13,13 @@ export class ContactsService {
   }
 
   async findOne(id:string): Promise<Contact[]> {
-    console.log(id);
     return this.constactModel.findById(id);
+  }
+
+  async deleteMany(ids:string[]): Promise<Number> {
+    console.log("ids", ids);
+    const result = await this.constactModel.deleteMany({ _id: { $in: ids } });
+    return result.deletedCount;
   }
 
   async add(

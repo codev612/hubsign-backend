@@ -7,6 +7,7 @@ import {
     HttpStatus,
     Param,
     Post,
+    Delete,
     Request,
 } from '@nestjs/common';
 import { ContactsService } from './contacts.service';
@@ -35,7 +36,13 @@ export class ContactsController {
   }
 
   @HttpCode(HttpStatus.OK)
-//   @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
+  @Delete()
+  DeleteMany(@Body('ids') ids: string[]): Promise<Number> {
+    return this.contactService.deleteMany(ids);
+  }
+
+  @HttpCode(HttpStatus.OK)
   @Post('update')
   addContact(
     @Body('email') email: string, 
