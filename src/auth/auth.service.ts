@@ -19,7 +19,7 @@ export class AuthService {
     const user = await this.usersService.findOne(email);
     // const hashedPassword = await this.hashString(pass);
     if(!user) {
-        throw new UnauthorizedException("User not found");
+      throw new UnauthorizedException("User not found");
     }
 
     if(!user.password){
