@@ -20,7 +20,7 @@ import {
     @UseInterceptors(FileInterceptor('file'))
     @Bind(UploadedFile())
     async uploadFile(file: Express.Multer.File) {
-        const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'document');
+        const uploadDir = path.join(process.cwd(), 'uploads', 'document');
   
         // Ensure the uploads directory exists
         if (!fs.existsSync(uploadDir)) {
