@@ -4,6 +4,7 @@ import { Document } from './interfaces/document.interface';
 import { Model } from 'mongoose';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { CreateDocumentDto } from './dto/create-document.dto';
+import { generateJWTId } from 'utils/jwt.util';
 
 @Injectable()
 export class DocumentService {
@@ -14,7 +15,7 @@ export class DocumentService {
     }
 
     async findOne(id:string): Promise<Document[]> {
-        return this.documentModel.findById(id);
+        return this.documentModel.findOne({uid:id});
     }
 
     async deleteMany(ids:string[]): Promise<Number> {
@@ -28,11 +29,15 @@ export class DocumentService {
         createDocumentDto: CreateDocumentDto
     ): Promise<Object> {
         try {
-            const createdDocument = await this.documentModel.create({ owner, ...createDocumentDto });
+            const uid = generateJWTId();
+            const createdDocument = await this.documentModel.create({ uid, owner, ...createDocumentDto });
             return createdDocument;
         } catch(error) {
             console.log(error);
-            throw new UnauthorizedException("Server error");
+            return {
+                statusCode: 500,
+                message: "Server error"
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsString, IsDate, IsBoolean } from 'class-validator'
 export class CreateDocumentDto {
     @IsString()
     @IsNotEmpty()
@@ -14,5 +14,9 @@ export class CreateDocumentDto {
     @IsString()
     @IsNotEmpty()
     status: string;
+    @IsNotEmpty()
+    @IsBoolean()
+    signingOrder: boolean;
+    @IsDate()
     createdAt: Date;
 }

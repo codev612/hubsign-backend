@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export const DocumentSchema = new mongoose.Schema({
+  uid: String,
   owner: String,
   name: String,
   filename: String,
@@ -9,6 +10,7 @@ export const DocumentSchema = new mongoose.Schema({
   activity: Array,
   status: String,
   canvas: Array,
+  signingOrder: Boolean,
   createdAt: {
     type: Date,
     default: Date.now,

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, IsDate } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsString, IsDate, IsBoolean } from 'class-validator'
 export class UpdateDocumentDto {
     @IsString()
     @IsNotEmpty()
@@ -16,6 +16,9 @@ export class UpdateDocumentDto {
     status: string;
     @IsNotEmpty()
     canvas: object[];
+    @IsNotEmpty()
+    @IsBoolean()
+    signingOrder: boolean;
     @IsNotEmpty()
     @IsDate()
     updatedAt: Date;
