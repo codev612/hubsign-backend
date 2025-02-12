@@ -43,12 +43,12 @@ export class SignatureController {
       return this.signatureService.findAll(req.user.email, req.query.type);
   }
 
-  // @HttpCode(HttpStatus.OK)
-  // @UseGuards(AuthGuard)
-  // @Delete()
-  // DeleteMany(@Body('ids') ids: string[]): Promise<Number> {
-  //   return this.documentService.deleteMany(ids);
-  // }
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  @Delete()
+  DeleteOne(@Body('id') id: string): Promise<Object> {
+    return this.signatureService.deleteOne(id);
+  }
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)

@@ -12,6 +12,10 @@ export class SignatureService {
         return this.signatureModel.find({user, type}).exec();
     }
 
+    async deleteOne(id:string): Promise<Object>{
+        return this.signatureModel.findByIdAndDelete(id).exec();
+    }
+
     async add(
         createSignatureDto: CreateSignatureDto
     ): Promise<Object> {
