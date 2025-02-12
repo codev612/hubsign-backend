@@ -37,7 +37,6 @@ import {
                 console.error('Error saving file:', err);
                 throw new Error('Error saving file');
             }
-            console.log(`File saved to ${filePath}`);
         });
         // Return a success response
         return {

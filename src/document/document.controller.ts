@@ -61,7 +61,6 @@ export class DocumentController {
   @Get('pdf/:filename')
   async getPdf(@Param('filename') filename: string, @Res() res: Response) {
     const filePath = path.join(process.cwd(), 'uploads', 'document', filename);
-    console.log(filePath)
 
     if (!fs.existsSync(filePath)) {
       throw new NotFoundException('File not found');

@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { ContactModule } from './contacts/contacts.module';
 import { UploadModule } from './upload/upload.module';
 import { DocumentModule } from './document/document.module';
+import { SignatureModule } from './signature/signature.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { DocumentModule } from './document/document.module';
     ContactModule,
     UploadModule,
     DocumentModule,
+    SignatureModule,
   ],
   controllers: [AppController],
   providers: [AppService],
