@@ -5,7 +5,7 @@ export interface Document extends MDocument {
     readonly name: string;
     readonly filename: string;
     readonly filepath: string;
-    readonly status: string;
+    readonly status: string; //"draft"|"inprogress"|"completed"
     readonly signingOrder: boolean;
     readonly recipients: string[];
     readonly activity: object[];

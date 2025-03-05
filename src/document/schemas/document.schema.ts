@@ -8,7 +8,10 @@ export const DocumentSchema = new mongoose.Schema({
   filepath: String,
   recipients: Array,
   activity: Array,
-  status: String,
+  status: {
+    type: String,
+    default: "draft",
+  },
   canvas: Array,
   signingOrder: Boolean,
   createdAt: {
