@@ -16,6 +16,7 @@ export class UpdateDocumentDto {
     @IsString()
     @IsNotEmpty()
     status: string;
+    advanced: object;
     @IsNotEmpty()
     canvas: object[];
     @IsNotEmpty()
