@@ -75,12 +75,13 @@ export class DocumentController {
     fileStream.pipe(res);
   }
 
-  // @Post('update/:id')
-  // updateContact(
-  //   @Param() params: any, 
-  //   @Body() updateDocumentDto: UpdateDocumentDto
-  // ) {
-  //   // console.log(req.user.email)
-  //   return this.documentService.update(params, updateDocumentDto);
-  // }
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  @Post('savedoc')
+  updateDocument(
+    @Body() updateDocumentDto: UpdateDocumentDto
+  ) {
+    // console.log(updateDocumentDto.uid)
+    return this.documentService.update(updateDocumentDto);
+  }
 }

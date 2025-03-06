@@ -2,6 +2,8 @@ import { IsEmail, IsNotEmpty, IsString, IsDate, IsBoolean } from 'class-validato
 export class UpdateDocumentDto {
     @IsString()
     @IsNotEmpty()
+    uid:string;
+    @IsNotEmpty()
     name:string;
     @IsString()
     @IsNotEmpty()

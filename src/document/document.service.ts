@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { generateJWTId } from 'utils/jwt.util';
+import { INPROGRESS } from 'constants/document';
 
 @Injectable()
 export class DocumentService {
@@ -42,17 +43,14 @@ export class DocumentService {
     }
 
     async update(
-        params: any,
         updateDocumentDto: UpdateDocumentDto
     ): Promise<Document> {
-        console.log("params",params)
         updateDocumentDto.updatedAt = new Date(); //
 
-        const updatedDocument = await this.documentModel.findByIdAndUpdate(
-        params.id, // Find contact by id
-        updateDocumentDto, // Update data
-        { new: true } // Return the updated document
-        ).exec();
+        const updatedDocument = await this.documentModel.findOneAndUpdate(
+            {uid:updateDocumentDto.uid},
+            {canvas:updateDocumentDto.canvas, status: INPROGRESS}
+        )
 
         // console.log(contact)
         return updatedDocument;

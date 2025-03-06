@@ -1,3 +1,4 @@
+import { DRAFT } from 'constants/document';
 import * as mongoose from 'mongoose';
 
 export const DocumentSchema = new mongoose.Schema({
@@ -10,7 +11,7 @@ export const DocumentSchema = new mongoose.Schema({
   activity: Array,
   status: {
     type: String,
-    default: "draft",
+    default: DRAFT,
   },
   canvas: Array,
   signingOrder: Boolean,
