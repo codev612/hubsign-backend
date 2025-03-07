@@ -19,7 +19,7 @@ import * as path from 'path';
 import { DocumentService } from './document.service';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { CreateDocumentDto } from './dto/create-document.dto';
-import { Document } from './interfaces/document.interface';
+import { Document, DocumentSummary } from './interfaces/document.interface';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 
@@ -34,11 +34,21 @@ export class DocumentController {
   //   return this.documentService.findAll(req.user.email);
   // }
 
-  @HttpCode(HttpStatus.OK)
+  // @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
-  @Get(':id')
+  @Get('draft/:id')
   findOne(@Param() params: any): Promise<Document[]> {
     return this.documentService.findOne(params.id);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  @Get('pending')
+  findPending(
+    @Param() params: any,
+    @Request() req,
+  ): Promise<DocumentSummary[]> {
+    return this.documentService.findPending(req.user.email);
   }
 
   // @HttpCode(HttpStatus.OK)
@@ -48,7 +58,6 @@ export class DocumentController {
   //   return this.documentService.deleteMany(ids);
   // }
 
-  @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
   @Post('add')
   addDocument(
@@ -75,7 +84,6 @@ export class DocumentController {
     fileStream.pipe(res);
   }
 
-  @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
   @Post('savedoc')
   updateDocument(

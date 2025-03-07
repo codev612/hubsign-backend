@@ -11,18 +11,23 @@ export class UpdateDocumentDto {
     @IsString()
     @IsNotEmpty()
     filepath:string;
-    @IsNotEmpty()
-    recipients: string[];
     @IsString()
     @IsNotEmpty()
     status: string;
     advanced: object;
-    @IsNotEmpty()
+    cc: string[];
+    autoReminder: object;
+    customExpDay: number;
     canvas: object[];
+    @IsNotEmpty()
+    recipients: string[];
     @IsNotEmpty()
     @IsBoolean()
     signingOrder: boolean;
     @IsNotEmpty()
     @IsDate()
     updatedAt: Date;
+    @IsNotEmpty()
+    @IsDate()
+    sentAt: Date;
 }

@@ -43,6 +43,9 @@ export const DocumentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  sentAt: {
+    type: Date
+  },
   deletedAt: {
     type: Date,
   },

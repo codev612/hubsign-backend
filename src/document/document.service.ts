@@ -1,6 +1,6 @@
 
 import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
-import { Document } from './interfaces/document.interface';
+import { Document, DocumentSummary } from './interfaces/document.interface';
 import { Model } from 'mongoose';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { CreateDocumentDto } from './dto/create-document.dto';
@@ -13,6 +13,15 @@ export class DocumentService {
 
     async findAll(owner:string): Promise<Document[]> {
         return this.documentModel.find({owner}).exec();
+    }
+
+    async findPending(owner:string): Promise<DocumentSummary[]> {
+        const result = this.documentModel.find({ owner })
+                                        .select('uid name recipients status sentAt activity') // Specify the fields you need
+                                        .lean()
+                                        .exec();
+        console.log(result);
+        return result
     }
 
     async findOne(id:string): Promise<Document[]> {
@@ -46,11 +55,12 @@ export class DocumentService {
         updateDocumentDto: UpdateDocumentDto
     ): Promise<Document> {
         updateDocumentDto.updatedAt = new Date(); //
+        if(updateDocumentDto.status === INPROGRESS) updateDocumentDto.sentAt = new Date();
 
         const updatedDocument = await this.documentModel.findOneAndUpdate(
             {uid:updateDocumentDto.uid},
-            {canvas:updateDocumentDto.canvas, status: INPROGRESS}
-        )
+            {...updateDocumentDto}
+        );
 
         // console.log(contact)
         return updatedDocument;
