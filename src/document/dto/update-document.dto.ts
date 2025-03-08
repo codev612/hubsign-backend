@@ -27,7 +27,6 @@ export class UpdateDocumentDto {
     @IsNotEmpty()
     @IsDate()
     updatedAt: Date;
-    @IsNotEmpty()
     @IsDate()
     sentAt: Date;
 }

@@ -45,7 +45,6 @@ export class DocumentController {
   @UseGuards(AuthGuard)
   @Get('pending')
   findPending(
-    @Param() params: any,
     @Request() req,
   ): Promise<DocumentSummary[]> {
     return this.documentService.findPending(req.user.email);
@@ -57,6 +56,12 @@ export class DocumentController {
   // DeleteMany(@Body('ids') ids: string[]): Promise<Number> {
   //   return this.documentService.deleteMany(ids);
   // }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  DeleteOne(@Param() params: any): Promise<Document> {
+    return this.documentService.deleteOne(params.id);
+  }
 
   @UseGuards(AuthGuard)
   @Post('add')

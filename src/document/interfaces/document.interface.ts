@@ -23,6 +23,7 @@ export interface Document extends MDocument {
 export interface DocumentSummary {
     // uid: string;
     name: string;
+    owner: string;
     status: string;
     recipients: string[];
     activity: object[];
