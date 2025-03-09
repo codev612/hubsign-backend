@@ -12,7 +12,7 @@ import * as path from 'path';
 
 @Injectable()
 export class TemplateService {
-    constructor(@Inject('DOCUMENT_MODEL') private readonly dbModel: Model<Template>) {}
+    constructor(@Inject('TEMPLATE_MODEL') private readonly dbModel: Model<Template>) {}
 
     async findAll(owner:string): Promise<Template[]> {
         return this.dbModel.find({owner}).exec();

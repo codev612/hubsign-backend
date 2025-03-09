@@ -23,7 +23,7 @@ import { Template, TemplateSummary } from './interface/template.interface';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 
-@Controller('document')
+@Controller('template')
 export class TemplateController {
   constructor(private templateService: TemplateService) {}
 

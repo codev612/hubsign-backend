@@ -8,6 +8,7 @@ import { ContactModule } from './contacts/contacts.module';
 import { UploadModule } from './upload/upload.module';
 import { DocumentModule } from './document/document.module';
 import { SignatureModule } from './signature/signature.module';
+import { TemplateModule } from './template/template.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SignatureModule } from './signature/signature.module';
     UploadModule,
     DocumentModule,
     SignatureModule,
+    TemplateModule,
   ],
   controllers: [AppController],
   providers: [AppService],

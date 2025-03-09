@@ -5,7 +5,7 @@ import { generateJWTId } from 'utils/jwt.util';
 @Injectable()
 export class AppService {
   getHello(): string {
-    return 'Welcome to e-Sign system!';
+    return 'Welcome to hubSign system!';
   }
 
   generateJWTId (): string {
