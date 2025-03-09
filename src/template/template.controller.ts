@@ -16,16 +16,16 @@ import { Express, Response } from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { DocumentService } from './document.service';
-import { UpdateDocumentDto } from './dto/update-document.dto';
-import { CreateDocumentDto } from './dto/create-document.dto';
-import { Document, DocumentSummary } from './interfaces/document.interface';
+import { TemplateService } from './template.service';
+import { UpdateTemplateDto } from './dto/update-template.dto';
+import { CreateTemplateDto } from './dto/create-template.dto';
+import { Template, TemplateSummary } from './interface/template.interface';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('document')
-export class DocumentController {
-  constructor(private documentService: DocumentService) {}
+export class TemplateController {
+  constructor(private templateService: TemplateService) {}
 
   // @HttpCode(HttpStatus.OK)
   // @UseGuards(AuthGuard)
@@ -37,8 +37,8 @@ export class DocumentController {
   // @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
   @Get('draft/:id')
-  findOne(@Param() params: any): Promise<Document[]> {
-    return this.documentService.findOne(params.id);
+  findOne(@Param() params: any): Promise<Template[]> {
+    return this.templateService.findOne(params.id);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -46,8 +46,8 @@ export class DocumentController {
   @Get('pending')
   findPending(
     @Request() req,
-  ): Promise<DocumentSummary[]> {
-    return this.documentService.findPending(req.user.email);
+  ): Promise<TemplateSummary[]> {
+    return this.templateService.findPending(req.user.email);
   }
 
   // @HttpCode(HttpStatus.OK)
@@ -59,17 +59,17 @@ export class DocumentController {
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  DeleteOne(@Param() params: any): Promise<Document> {
-    return this.documentService.deleteOne(params.id);
+  DeleteOne(@Param() params: any): Promise<Template> {
+    return this.templateService.deleteOne(params.id);
   }
 
   @UseGuards(AuthGuard)
   @Post('add')
-  add(
+  addOne(
     @Request() req,
-    @Body() createDto: CreateDocumentDto
+    @Body() createDto: CreateTemplateDto
   ) {
-    return this.documentService.add(req.user.email, createDto);
+    return this.templateService.add(req.user.email, createDto);
   }
 
   @Get('pdf/:filename')
@@ -91,10 +91,10 @@ export class DocumentController {
 
   @UseGuards(AuthGuard)
   @Post('savedoc')
-  update(
-    @Body() updateDto: UpdateDocumentDto
+  updateOne(
+    @Body() updateDto: UpdateTemplateDto
   ) {
     // console.log(updateDocumentDto.uid)
-    return this.documentService.update(updateDto);
+    return this.templateService.update(updateDto);
   }
 }

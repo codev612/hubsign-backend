@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { ContactsService } from './contacts.service';
 import { UpdateContactDto } from './dto/update-contact.dto';
-import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import { Contact } from './interfaces/contact.interface';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -44,20 +43,20 @@ export class ContactsController {
 
   @HttpCode(HttpStatus.OK)
   @Post('update')
-  addContact(
+  add(
     @Body('email') email: string, 
-    @Body() updateContactDto: UpdateContactDto
+    @Body() updateDto: UpdateContactDto
   ) {
     // console.log(req.user.email)
-    return this.contactService.add(email, updateContactDto);
+    return this.contactService.add(email, updateDto);
   }
 
   @Post('update/:id')
-  updateContact(
+  update(
     @Param() params: any, 
-    @Body() updateContactDto: UpdateContactDto
+    @Body() updateDto: UpdateContactDto
   ) {
     // console.log(req.user.email)
-    return this.contactService.update(params, updateContactDto);
+    return this.contactService.update(params, updateDto);
   }
 }

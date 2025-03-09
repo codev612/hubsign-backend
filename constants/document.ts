@@ -1,6 +1,7 @@
 export const DRAFT = "Draft";
 export const INPROGRESS = "In progress";
 export const COMPLETED = "Completed";
+export const DECLINED = "Declined";
 
 export const VIEWED = "Viewed";
 export const SIGNED = "Signed";

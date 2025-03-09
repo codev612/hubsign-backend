@@ -46,11 +46,11 @@ export class SignatureController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
   @Post()
-  addSignature(
+  add(
     @Request() req,
-    @Body() createSignatureDto: CreateSignatureDto
+    @Body() createDto: CreateSignatureDto
   ) {
-    createSignatureDto.user = req.user.email;
-    return this.signatureService.add(createSignatureDto);
+    createDto.user = req.user.email;
+    return this.signatureService.add(createDto);
   }
 }

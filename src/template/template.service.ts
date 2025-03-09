@@ -1,9 +1,9 @@
 
 import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
-import { Document, DocumentSummary } from './interfaces/document.interface';
 import { Model } from 'mongoose';
-import { UpdateDocumentDto } from './dto/update-document.dto';
-import { CreateDocumentDto } from './dto/create-document.dto';
+import { Template, TemplateSummary } from './interface/template.interface';
+import { UpdateTemplateDto } from './dto/update-template.dto';
+import { CreateTemplateDto } from './dto/create-template.dto';
 import { generateJWTId } from 'utils/jwt.util';
 import { INPROGRESS } from 'constants/document';
 
@@ -11,33 +11,33 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 @Injectable()
-export class DocumentService {
-    constructor(@Inject('DOCUMENT_MODEL') private readonly documentModel: Model<Document>) {}
+export class TemplateService {
+    constructor(@Inject('DOCUMENT_MODEL') private readonly dbModel: Model<Template>) {}
 
-    async findAll(owner:string): Promise<Document[]> {
-        return this.documentModel.find({owner}).exec();
+    async findAll(owner:string): Promise<Template[]> {
+        return this.dbModel.find({owner}).exec();
     }
 
-    async findPending(owner:string): Promise<DocumentSummary[]> {
-        const result = this.documentModel.find({ owner })
+    async findPending(owner:string): Promise<TemplateSummary[]> {
+        const result = this.dbModel.find({ owner })
                                         .select('uid name owner recipients status sentAt activity signing order') // Specify the fields you need
                                         .lean()
                                         .exec();
         return result
     }
 
-    async findOne(id:string): Promise<Document[]> {
-        return this.documentModel.findOne({uid:id});
+    async findOne(id:string): Promise<Template[]> {
+        return this.dbModel.findOne({uid:id});
     }
 
     async deleteMany(ids:string[]): Promise<Number> {
-        const result = await this.documentModel.deleteMany({ _id: { $in: ids } });
+        const result = await this.dbModel.deleteMany({ _id: { $in: ids } });
         return result.deletedCount;
     }
 
-    async deleteOne(uid:string): Promise<Document> {
+    async deleteOne(uid:string): Promise<Template> {
         console.log("ids", uid);
-        const result = await this.documentModel.findOneAndDelete({uid});
+        const result = await this.dbModel.findOneAndDelete({uid});
         console.log(result.filepath);
         if (result && result.filepath) {
             const filePath = path.resolve(result.filepath);
@@ -60,11 +60,11 @@ export class DocumentService {
 
     async add(
         owner: string,
-        createDocumentDto: CreateDocumentDto
+        createDocumentDto: CreateTemplateDto
     ): Promise<Object> {
         try {
             const uid = generateJWTId();
-            const createdDocument = await this.documentModel.create({ uid, owner, ...createDocumentDto });
+            const createdDocument = await this.dbModel.create({ uid, owner, ...createDocumentDto });
             return createdDocument;
         } catch(error) {
             console.log(error);
@@ -76,15 +76,15 @@ export class DocumentService {
     }
 
     async update(
-        updateDocumentDto: UpdateDocumentDto
-    ): Promise<Document> {
-        updateDocumentDto.updatedAt = new Date(); //
-        console.log(updateDocumentDto.status);
-        if(updateDocumentDto.status === INPROGRESS) updateDocumentDto.sentAt = new Date();
+        updateTemplateDto: UpdateTemplateDto
+    ): Promise<Template> {
+        updateTemplateDto.updatedAt = new Date(); //
+        console.log(updateTemplateDto.status);
+        if(updateTemplateDto.status === INPROGRESS) updateTemplateDto.sentAt = new Date();
 
-        const updatedDocument = await this.documentModel.findOneAndUpdate(
-            {uid:updateDocumentDto.uid},
-            {...updateDocumentDto}
+        const updatedDocument = await this.dbModel.findOneAndUpdate(
+            // {uid:updateTemplateDto.uid},
+            {...updateTemplateDto}
         );
 
         // console.log(contact)
