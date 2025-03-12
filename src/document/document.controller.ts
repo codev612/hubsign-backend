@@ -50,12 +50,21 @@ export class DocumentController {
     return this.documentService.findPending(req.user.email);
   }
 
-  // @HttpCode(HttpStatus.OK)
-  // @UseGuards(AuthGuard)
-  // @Delete()
-  // DeleteMany(@Body('ids') ids: string[]): Promise<Number> {
-  //   return this.documentService.deleteMany(ids);
-  // }
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  @Delete('delete')
+  DeleteMany(@Body() uids: string[]): Promise<Number> {
+    return this.documentService.deleteMany(uids);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('copy')
+  Copy(
+    @Request() req,
+    @Body() uids: string[]
+  ): Promise<Document[]> {
+    return this.documentService.copy(req.user, uids);
+  }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
@@ -69,7 +78,7 @@ export class DocumentController {
     @Request() req,
     @Body() createDto: CreateDocumentDto
   ) {
-    return this.documentService.add(req.user.email, createDto);
+    return this.documentService.add(req.user, createDto);
   }
 
   @Get('pdf/:filename')

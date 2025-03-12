@@ -13,7 +13,7 @@ const secretKey: string = process.env.JWT_SECRET || 'jwt-secret-key-esign';
 //   throw new Error('JWT_SECRET environment variable is not set.');
 // }
 
-// Function to generate JWT ID
+// Function to generate uid
 export const generateJWTId = (): string => {
   const payload: JWTPayload = {
     random: Math.random().toString(5).substring(2), // Random string

@@ -32,7 +32,7 @@ export class AuthService {
       throw new UnauthorizedException("Invalid password");
     }
 
-    const payload = { sub:user._id, email: user.email };
+    const payload = { sub:user._id, email: user.email, username: `${user.firstname} ${user.lastname}` };
 
     return {
         access_token: await this.jwtService.signAsync(payload,{ expiresIn: '10days' }),

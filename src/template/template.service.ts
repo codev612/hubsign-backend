@@ -60,12 +60,19 @@ export class TemplateService {
 
     async add(
         owner: string,
-        createDocumentDto: CreateTemplateDto
+        createDto: CreateTemplateDto
     ): Promise<Object> {
         try {
             const uid = generateJWTId();
-            const createdDocument = await this.dbModel.create({ uid, owner, ...createDocumentDto });
-            return createdDocument;
+            const template = await this.dbModel.findOne({name:createDto.name});
+            if(template) {
+                return {
+                    statusCode: 500,
+                    message: "Already exist"
+                }
+            }
+            const createdTemplate = await this.dbModel.create({ uid, owner, ...createDto });
+            return createdTemplate;
         } catch(error) {
             console.log(error);
             return {
@@ -83,7 +90,7 @@ export class TemplateService {
         if(updateTemplateDto.status === INPROGRESS) updateTemplateDto.sentAt = new Date();
 
         const updatedDocument = await this.dbModel.findOneAndUpdate(
-            // {uid:updateTemplateDto.uid},
+            {uid:updateTemplateDto.uid},
             {...updateTemplateDto}
         );
 

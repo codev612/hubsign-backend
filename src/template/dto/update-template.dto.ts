@@ -1,6 +1,9 @@
 import { IsNotEmpty, IsString, IsDate, IsBoolean } from 'class-validator'
 export class UpdateTemplateDto {
     @IsNotEmpty()
+    @IsString()
+    uid:string;
+    @IsNotEmpty()
     name:string;
     @IsString()
     @IsNotEmpty()

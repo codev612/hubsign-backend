@@ -24,7 +24,7 @@ export class UpdateDocumentDto {
     @IsNotEmpty()
     @IsBoolean()
     signingOrder: boolean;
-    @IsNotEmpty()
+    activity: object[];
     @IsDate()
     updatedAt: Date;
     @IsDate()

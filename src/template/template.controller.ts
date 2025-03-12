@@ -36,7 +36,7 @@ export class TemplateController {
 
   // @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
-  @Get('draft/:id')
+  @Get('template/:id')
   findOne(@Param() params: any): Promise<Template[]> {
     return this.templateService.findOne(params.id);
   }

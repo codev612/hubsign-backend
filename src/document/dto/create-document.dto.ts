@@ -17,6 +17,7 @@ export class CreateDocumentDto {
     @IsNotEmpty()
     @IsBoolean()
     signingOrder: boolean;
+    activity: object[];
     @IsDate()
     createdAt: Date;
 }
