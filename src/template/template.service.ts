@@ -71,6 +71,7 @@ export class TemplateService {
                     message: "Already exist"
                 }
             }
+            console.log(createDto);
             const createdTemplate = await this.dbModel.create({ uid, owner, ...createDto });
             return createdTemplate;
         } catch(error) {

@@ -52,6 +52,15 @@ export class DocumentController {
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
+  @Get('completed')
+  findCompleted(
+    @Request() req,
+  ): Promise<DocumentSummary[]> {
+    return this.documentService.findCompeted(req.user.email);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
   @Delete('delete')
   DeleteMany(@Body() uids: string[]): Promise<Number> {
     return this.documentService.deleteMany(uids);

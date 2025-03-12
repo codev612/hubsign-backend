@@ -24,7 +24,15 @@ export class DocumentService {
     }
 
     async findPending(owner:string): Promise<DocumentSummary[]> {
-        const result = this.documentModel.find({ owner })
+        const result = this.documentModel.find({ owner, status: { $ne: DOCUMENT_STATUS.completed } })
+                                        .select('uid name owner filename recipients status sentAt activity signing order updatedAt createdAt') // Specify the fields you need
+                                        .lean()
+                                        .exec();
+        return result
+    }
+
+    async findCompeted(owner:string): Promise<DocumentSummary[]> {
+        const result = this.documentModel.find({ owner, status: DOCUMENT_STATUS.completed })
                                         .select('uid name owner filename recipients status sentAt activity signing order updatedAt createdAt') // Specify the fields you need
                                         .lean()
                                         .exec();

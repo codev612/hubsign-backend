@@ -69,6 +69,7 @@ export class TemplateController {
     @Request() req,
     @Body() createDto: CreateTemplateDto
   ) {
+    console.log(createDto)
     return this.templateService.add(req.user.email, createDto);
   }
 
