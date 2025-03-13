@@ -41,12 +41,12 @@ export class TemplateController {
     return this.templateService.findOne(params.id);
   }
 
-  // @HttpCode(HttpStatus.OK)
-  // @UseGuards(AuthGuard)
-  // @Delete()
-  // DeleteMany(@Body('ids') ids: string[]): Promise<Number> {
-  //   return this.documentService.deleteMany(ids);
-  // }
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  @Delete()
+  DeleteMany(@Body() uids: string[]): Promise<Number> {
+    return this.templateService.deleteMany(uids);
+  }
 
   @UseGuards(AuthGuard)
   @Delete(':id')

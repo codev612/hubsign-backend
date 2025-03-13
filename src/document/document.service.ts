@@ -43,8 +43,30 @@ export class DocumentService {
         return this.documentModel.findOne({uid:id});
     }
 
-    async deleteMany(uids:string[]): Promise<Number> {
+    async deleteMany(uids: string[]): Promise<number> {
+        // Fetch documents before deleting to get file paths
+        const documents = await this.documentModel.find({ uid: { $in: uids } });
+    
+        // Delete the documents from the database
         const result = await this.documentModel.deleteMany({ uid: { $in: uids } });
+    
+        // Delete associated files
+        documents.forEach((doc) => {
+            if (doc.filepath) {
+                const filePath = path.resolve(doc.filepath);
+                try {
+                    if (fs.existsSync(filePath)) {
+                        fs.unlinkSync(filePath);
+                        console.log(`File deleted: ${filePath}`);
+                    } else {
+                        console.log(`File not found: ${filePath}`);
+                    }
+                } catch (error) {
+                    console.error(`Error deleting file: ${error.message}`);
+                }
+            }
+        });
+    
         return result.deletedCount;
     }
 
@@ -110,7 +132,7 @@ export class DocumentService {
                 const newUid = generateJWTId();
                 
                 // Remove _id to avoid duplicate key error
-                const { _id, name, ...docData } = originalDoc;
+                const { _id, name, filepath, ...docData } = originalDoc;
             
                 // Find existing copies with a similar name
                 const existingCopies = await this.documentModel.find({ name: new RegExp(`^${name}-copy(\\d*)$`, "i") }).lean();
@@ -127,11 +149,28 @@ export class DocumentService {
             
                 // Generate new name with incremented copy number
                 const newName = `${name}-copy${copyNumber}`;
-            
+    
+                // Copy the file if filepath exists
+                let newFilePath = "";
+                if (filepath) {
+                    const ext = path.extname(filepath);
+                    const dir = path.dirname(filepath);
+                    console.log(ext,dir)
+                    newFilePath = path.join(dir, `${Date.now()}_${originalDoc.name}`);
+    
+                    try {
+                        fs.copyFileSync(filepath, newFilePath);
+                        console.log(`File copied: ${filepath} -> ${newFilePath}`);
+                    } catch (error) {
+                        console.error(`Error copying file: ${error.message}`);
+                    }
+                }
+    
                 const copiedDoc = {
                     ...docData,
                     uid: newUid,
                     name: newName, // Set new unique name
+                    filepath: newFilePath || "", // Set new file path if copied
                     status: DOCUMENT_STATUS.draft,
                     createdAt: new Date(),
                     updatedAt: new Date(),
@@ -147,7 +186,6 @@ export class DocumentService {
             
                 return this.documentModel.create(copiedDoc);
             }));
-                      
     
             return copiedDocs;
         } catch (error) {

@@ -27,8 +27,30 @@ export class TemplateService {
         return this.dbModel.findOne({uid:id});
     }
 
-    async deleteMany(ids:string[]): Promise<Number> {
-        const result = await this.dbModel.deleteMany({ _id: { $in: ids } });
+    async deleteMany(uids: string[]): Promise<number> {
+        // Fetch documents before deleting to get file paths
+        const documents = await this.dbModel.find({ uid: { $in: uids } });
+    
+        // Delete the documents from the database
+        const result = await this.dbModel.deleteMany({ uid: { $in: uids } });
+    
+        // Delete associated files
+        documents.forEach((doc) => {
+            if (doc.filepath) {
+                const filePath = path.resolve(doc.filepath);
+                try {
+                    if (fs.existsSync(filePath)) {
+                        fs.unlinkSync(filePath);
+                        console.log(`File deleted: ${filePath}`);
+                    } else {
+                        console.log(`File not found: ${filePath}`);
+                    }
+                } catch (error) {
+                    console.error(`Error deleting file: ${error.message}`);
+                }
+            }
+        });
+    
         return result.deletedCount;
     }
 
@@ -132,7 +154,7 @@ export class TemplateService {
     async update(
         updateTemplateDto: UpdateTemplateDto
     ): Promise<Template> {
-        updateTemplateDto.updatedAt = new Date(); //
+        updateTemplateDto.updatedAt = new Date();
 
         const updatedDocument = await this.dbModel.findOneAndUpdate(
             {uid:updateTemplateDto.uid},
