@@ -111,7 +111,7 @@ export class DocumentController {
   @Post('savedoc')
   update(
     @Body() updateDto: UpdateDocumentDto
-  ) {
+  ) : Promise<Document> {
     // console.log(updateDocumentDto.uid)
     return this.documentService.update(updateDto);
   }

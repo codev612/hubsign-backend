@@ -27,27 +27,18 @@ import { AuthGuard } from 'src/auth/auth.guard';
 export class TemplateController {
   constructor(private templateService: TemplateService) {}
 
-  // @HttpCode(HttpStatus.OK)
-  // @UseGuards(AuthGuard)
-  // @Get()
-  // findAll(@Request() req): Promise<Document[]> {
-  //   return this.documentService.findAll(req.user.email);
-  // }
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  @Get()
+  findAll(@Request() req): Promise<Template[]> {
+    return this.templateService.findAll(req.user.email);
+  }
 
   // @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
   @Get('template/:id')
   findOne(@Param() params: any): Promise<Template[]> {
     return this.templateService.findOne(params.id);
-  }
-
-  @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard)
-  @Get('pending')
-  findPending(
-    @Request() req,
-  ): Promise<TemplateSummary[]> {
-    return this.templateService.findPending(req.user.email);
   }
 
   // @HttpCode(HttpStatus.OK)
@@ -73,6 +64,24 @@ export class TemplateController {
     return this.templateService.add(req.user.email, createDto);
   }
 
+  @UseGuards(AuthGuard)
+  @Post('copy')
+  Copy(
+    @Request() req,
+    @Body() uids: string[]
+  ): Promise<Template[]> {
+    return this.templateService.copy(req.user, uids);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('rename')
+  Rename(
+    @Request() req,
+    @Body() updateDto: UpdateTemplateDto
+  ): Promise<Template> {
+    return this.templateService.update(updateDto);
+  }
+
   @Get('pdf/:filename')
   async getPdf(@Param('filename') filename: string, @Res() res: Response) {
     const filePath = path.join(process.cwd(), 'uploads', 'document', filename);
@@ -94,7 +103,7 @@ export class TemplateController {
   @Post('savedoc')
   updateOne(
     @Body() updateDto: UpdateTemplateDto
-  ) {
+  ):Promise<Template> {
     // console.log(updateDocumentDto.uid)
     return this.templateService.update(updateDto);
   }
