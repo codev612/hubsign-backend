@@ -71,7 +71,7 @@ export class DocumentService {
     }
 
     async deleteOne(uid:string): Promise<Document> {
-        console.log("ids", uid);
+        console.log("aaaaaaaaaaa", uid);
         const result = await this.documentModel.findOneAndDelete({uid});
         console.log(result.filepath);
         if (result && result.filepath) {

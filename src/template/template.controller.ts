@@ -43,7 +43,7 @@ export class TemplateController {
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
-  @Delete()
+  @Delete('delete')
   DeleteMany(@Body() uids: string[]): Promise<Number> {
     return this.templateService.deleteMany(uids);
   }
@@ -60,7 +60,6 @@ export class TemplateController {
     @Request() req,
     @Body() createDto: CreateTemplateDto
   ) {
-    console.log(createDto)
     return this.templateService.add(req.user.email, createDto);
   }
 
